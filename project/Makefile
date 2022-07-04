@@ -21,12 +21,6 @@ down:
 	docker-compose down
 	@echo "Done!"
 
-## build_broker: builds the broker binary as a linux executable
-build_broker:
-	@echo "Building broker binary..."
-	cd ../broker-service && env GOOS=linux CGO_ENABLED=1 go build -o ${BROKER_BINARY} ./cmd/api
-	@echo "Done!"
-
 ## build_front: builds the frone end binary
 build_front:
 	@echo "Building front end binary..."
