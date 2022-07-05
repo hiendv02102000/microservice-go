@@ -15,7 +15,7 @@ type Database struct {
 
 func NewDB() (Database, error) {
 	//dsn := "bac4178dc89368:292965a5@tcp(us-cdbr-east-05.cleardb.net)/heroku_560fb6556eff9f8?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := "host=containers-us-west-70.railway.app user=postgres  password=1XSZGsGfL4mGuUQNuHBT dbname=railway port=7208 sslmode=disable"
+	dsn := "host=localhost port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
 
 	db, err := gorm.Open("postgres", dsn)
 	return Database{
