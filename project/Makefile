@@ -22,18 +22,6 @@ down:
 	docker-compose down
 	@echo "Done!"
 
-## build_broker: builds the broker binary as a linux executable
-build_broker:
-	@echo "Building broker binary..."
-	cd ../broker-service && env GOOS=linux CGO_ENABLED=0 go build -o ${BROKER_BINARY} ./cmd/api
-	@echo "Done!"
-
-## build_auth: builds the auth binary as a linux executable
-build_auth:
-	@echo "Building auth binary..."
-	cd ../authentication-service && env GOOS=linux CGO_ENABLED=0 go build -o ${AUTH_BINARY} ./cmd/api
-	@echo "Done!"
-
 ## build_front: builds the frone end binary
 build_front:
 	@echo "Building front end binary..."
