@@ -1,4 +1,4 @@
-package router
+package main
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,7 +9,6 @@ type Router struct {
 }
 
 func NewRouter() Router {
-
 	return Router{
 		Engine: gin.Default(),
 	}
