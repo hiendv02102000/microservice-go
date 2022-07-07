@@ -1,12 +1,13 @@
 package db
 
 import (
-	"fmt"
+	"authentication/data/entity"
 
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 
 	"github.com/jinzhu/gorm"
-	_ "github.com/jinzhu/gorm/dialects/postgres"
+	// import mysql driver
+	_ "github.com/go-sql-driver/mysql"
 )
 
 type Database struct {
@@ -15,14 +16,17 @@ type Database struct {
 
 func NewDB() (Database, error) {
 	//dsn := "bac4178dc89368:292965a5@tcp(us-cdbr-east-05.cleardb.net)/heroku_560fb6556eff9f8?charset=utf8mb4&parseTime=True&loc=Local"
-	dsn := "host=localhost port=5432 user=postgres password=password dbname=users sslmode=disable timezone=UTC connect_timeout=5"
-
-	db, err := gorm.Open("postgres", dsn)
+	dsn := "hiendv:password@tcp(mysql:3306)/usersdb?charset=utf8&parseTime=True&loc=Local"
+	db, err := gorm.Open("mysql", dsn)
 	return Database{
 		DB: db,
 	}, err
 }
+func (db *Database) Migrate() error {
+	err := db.DB.AutoMigrate(entity.User{}).Error
 
+	return err
+}
 func (db *Database) First(condition interface{}, value interface{}) error {
 	err := db.DB.First(value, condition).Error
 
@@ -40,22 +44,8 @@ func (db *Database) Find(condition interface{}, value interface{}) error {
 	return err
 }
 
-func (db *Database) FindWithPagination(condition interface{}, offset int, pageSize int, value interface{}) error {
-	err := db.DB.Offset(offset).Limit(pageSize).Find(value, condition).Error
-	if gorm.IsRecordNotFoundError(err) {
-		return nil
-	}
-	return err
-}
-
 func (db *Database) Create(value interface{}) error {
 	err := db.DB.Create(value).Error
-	return err
-}
-
-func (db *Database) CreateMany(value interface{}, model interface{}) error {
-	fmt.Println(model)
-	err := db.DB.Model(model).Create(value).Error
 	return err
 }
 

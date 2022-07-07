@@ -1,29 +1,44 @@
 package handler
 
 import (
+	"authentication/data/db"
+	"authentication/data/dto"
+	"authentication/handler/repository"
+	"authentication/handler/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type jsonResponse struct {
-	Error   bool   `json:"error"`
-	Message string `json:"message"`
-	Data    any    `json:"data,omitempty"`
-}
-
 type HTTPHandler struct {
+	Usecase usecase.UserUsecase
 }
 
-func NewHTTPHandler() *HTTPHandler {
-	return &HTTPHandler{}
+func NewHTTPHandler(db db.Database) *HTTPHandler {
+	repo := repository.NewUserRepository(db)
+	usecase := usecase.NewUserUsecase(repo)
+	return &HTTPHandler{Usecase: usecase}
 }
 
-func (h *HTTPHandler) Broker(c *gin.Context) {
-	payload := jsonResponse{
-		Error:   false,
-		Message: "Hit the broker1",
+func (h *HTTPHandler) Authenticate(c *gin.Context) {
+	loginReq := dto.AuthenticateRequest{}
+	err := c.ShouldBind(&loginReq)
+	if err != nil {
+		data := dto.BaseResponse{
+			Status: http.StatusBadRequest,
+			Error:  err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, data)
+		return
 	}
-	c.Header("Access-Control-Allow-Origin", "*")
-	c.JSON(http.StatusAccepted, payload)
+	data, err := h.Usecase.Authenticate(loginReq)
+	if err != nil {
+		data := dto.BaseResponse{
+			Status: http.StatusBadRequest,
+			Error:  err.Error(),
+		}
+		c.JSON(http.StatusBadRequest, data)
+		return
+	}
+	c.JSON(http.StatusAccepted, data)
 }

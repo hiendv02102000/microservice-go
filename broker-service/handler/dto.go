@@ -1,11 +1,10 @@
-package main
+package handler
 
-import (
-	"github.com/gin-gonic/gin"
-)
-
-type Router struct {
-	Engine *gin.Engine
+// BaseResponse struct
+type BaseResponse struct {
+	Status int         `json:"status"`
+	Result interface{} `json:"result"`
+	Error  interface{} `json:"error"`
 }
 type RequestPayload struct {
 	Action string      `json:"action"`
@@ -15,10 +14,4 @@ type RequestPayload struct {
 type AuthPayload struct {
 	Email    string `json:"email"`
 	Password string `json:"password"`
-}
-
-func NewRouter() Router {
-	return Router{
-		Engine: gin.Default(),
-	}
 }

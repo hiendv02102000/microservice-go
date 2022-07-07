@@ -14,15 +14,15 @@ type BaseModel struct {
 }
 
 func (m *BaseModel) BeforeCreate(db *gorm.DB) error {
-	m.CreatedAt = time.Now().Local()
+	m.CreatedAt = time.Now().UTC()
 	return nil
 }
 
 func (m *BaseModel) BeforeUpdate(db *gorm.DB) error {
-	m.UpdatedAt = time.Now().Local()
+	m.UpdatedAt = time.Now().UTC()
 	return nil
 }
 func (m *BaseModel) BeforeDelete(db *gorm.DB) error {
-	m.UpdatedAt = time.Now().Local()
+	m.UpdatedAt = time.Now().UTC()
 	return nil
 }

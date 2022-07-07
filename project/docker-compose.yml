@@ -26,16 +26,14 @@ services:
       replicas: 1
 
 
-  postgres:
-    image: 'postgres:14.2'
+  mysql:
+    image: mysql:latest
     ports:
-      - "5432:5432"
-    deploy:
-      mode: replicated
-      replicas: 1
+      - "3306:3306"
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: users
-    volumes:
-      - ./db-data/postgres/:/var/lib/postgresql/data/
+      MYSQL_ROOT_PASSWORD: password 
+      MYSQL_DATABASE: usersdb
+      MYSQL_USER: hiendv
+      MYSQL_PASSWORD: password
+
+   

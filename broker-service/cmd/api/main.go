@@ -15,6 +15,7 @@ func main() {
 	api := app.Engine.Group("")
 	{
 		api.POST("/", h.Broker)
+		api.POST("/handler", h.HandleSubmission)
 	}
 	// define http server
 	app.Engine.Run(webPort)
